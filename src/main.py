@@ -420,7 +420,8 @@ class UocZkpCheaterProverB0(UocZkpProver):
         c = None
 
         # --- IMPLEMENTATION GOES HERE ---
-
+        self.r = randint(2,self.p)
+        c = pow(self.g, self.r, self.p)
         # --------------------------------
 
         print_debug("{}:\tI amb sending c = {}".format(self.name, c), LOG_INFO)
