@@ -257,6 +257,9 @@ class UocZkpProver:
         h = None
 
         # --- IMPLEMENTATION GOES HERE ---
+        p1 = self.p -1
+        bx = (b * self.x) % p1
+        h= (self.r + bx) % p1
 
         # --------------------------------
 

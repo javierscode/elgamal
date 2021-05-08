@@ -815,7 +815,8 @@ if __name__ == '__main__':
     test_classes_to_run = [Test1_1_ElGamalKeyGen, Test1_2_ElGamalSign,
                            Test1_3_ElGamalVerify, Test1_4_ElGamalExtractPrivKey,
 
-                           Test2_1_0_ZkpProverInit, Test2_1_ZkpProverComputeC]
+                           Test2_1_0_ZkpProverInit, Test2_1_ZkpProverComputeC,
+                           Test2_2_ZkpProverComputeH]
 
     loader = unittest.TestLoader()
     suites_list = []
