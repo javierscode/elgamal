@@ -339,7 +339,12 @@ class UocZkpVerifier:
         result = None
 
         # --- IMPLEMENTATION GOES HERE ---
-
+        value_1 = (self.c * pow(self.y, self.b, self.p)) % self.p
+        value_2 = pow(self.g, h, self.p)
+        if value_1 == value_2:
+            result = True
+        else:
+            result = False
         # --------------------------------
 
         print_debug("{}:\t\tThe result of the verification is {}"
