@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import random
+import math
+from random import randint
 
 from sympy.ntheory.residue_ntheory import is_primitive_root
 from sympy.ntheory.primetest import isprime
@@ -58,8 +59,8 @@ def uoc_elgamal_keygen(n_bits):
     # --- IMPLEMENTATION GOES HERE ---
 
     p = prime(n_bits)
-    alpha = random.randrange(1,p)
-    d = random.randrange(2,p-1)
+    alpha = randint(1,p)
+    d = randint(2,p-1)
     beta = pow(alpha,d,p)
 
     k_priv = (p, alpha, d)
@@ -90,7 +91,7 @@ def uoc_elgamal_sign(k_priv, m, h=None):
 
     if h == None:
         while (h == None):
-            new_h = random.randrange(2, p - 2)
+            new_h = randint(2, p - 2)
             if math.gcd(new_h, p - 1) == 1:
                 h = new_h
 
@@ -239,10 +240,11 @@ class UocZkpProver:
         c = None
 
         # --- IMPLEMENTATION GOES HERE ---
-
+        self.r = randint(2,self.p)
+        c = pow(self.g, self.r, self.p)
         # --------------------------------
 
-        print_debug("{}:\tI amb sending c = {}".format(self.name, c), LOG_INFO)
+        print_debug("{}:\tI amb sending cW = {}".format(self.name, c), LOG_INFO)
         return c
 
     def compute_h(self, b):
