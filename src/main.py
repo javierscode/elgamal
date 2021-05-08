@@ -320,7 +320,8 @@ class UocZkpVerifier:
         """
 
         # --- IMPLEMENTATION GOES HERE ---
-
+        self.c = c
+        self.b = randint(0,1)
         # --------------------------------
 
         print_debug("{}:\t\tI have chosen b = {}"
