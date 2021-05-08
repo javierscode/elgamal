@@ -153,6 +153,29 @@ def uoc_elgamal_extract_private_key(k_pub, m1, sig1, m2, sig2):
     k_priv = None
 
     # --- IMPLEMENTATION GOES HERE ---
+    (p, alpha, beta)  = k_pub
+    (r1,s1) = sig1
+    (r2,s2) = sig2
+
+    p1= p-1
+
+    if r1 == r2 and s1!=s2 and m1!=m2:
+        try:
+            not_m1= (m1*-1) % p1
+            not_s1= (s1*-1) % p1
+            m2_rest_m1 = (m2 + not_m1) % p1
+            s2_rest_s1 = (s2 + not_s1) % p1
+            h = (m2_rest_m1 * pow(s2_rest_s1,-1,p1)) % p1
+            hs = (h*s1) % p1
+            not_hs = (hs*-1) % p1
+            mhs = (m1 + not_hs) % p1
+            r_1 = pow(r1,-1,p1)
+            d = (mhs*r_1) % p1
+            k_priv = (p, alpha,d)
+        except:
+            k_priv = -1
+    else:
+        k_priv = -1
 
     # --------------------------------
 
@@ -457,5 +480,11 @@ class UocZkpCheaterProverB1(UocZkpProver):
         print_debug("{}:\tI amb sending h = {}".format(self.name, h), LOG_INFO)
         return h
 
-
-
+if __name__ == '__main__':
+    exp_k_priv = (1736419493, 423105914, 1439798331)
+    k_pub = (1736419493, 423105914, 1388681513)
+    m1, m2 = 4321, 1234
+    sig1 = (1670801833, 813531998)
+    sig2 = (1670801833, 1514976703)
+    extracted_k_priv = uoc_elgamal_extract_private_key(k_pub, m1, sig1, m2, sig2)
+    print(extracted_k_priv)
