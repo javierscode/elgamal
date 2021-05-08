@@ -86,7 +86,20 @@ def uoc_elgamal_sign(k_priv, m, h=None):
     r, s = None, None
 
     # --- IMPLEMENTATION GOES HERE ---
+    (p, alpha, d) = k_priv
 
+    if h == None:
+        while (h == None):
+            new_h = random.randrange(2, p - 2)
+            if math.gcd(new_h, p - 1) == 1:
+                h = new_h
+
+    r = pow(alpha, h, p)
+
+    p1 = p - 1
+    dr = (d * r) % p1
+    mdr = (m - dr) % p1
+    s = (mdr * pow(h, -1, p1)) % p1
     # --------------------------------
 
     return r, s

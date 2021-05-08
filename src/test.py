@@ -812,7 +812,7 @@ if __name__ == '__main__':
     #
     #                        Test3_1_ZkpCheaterProverB0ComputeC, Test3_2_ZkpCheaterProverB0ComputeH,
     #                        Test3_3_ZkpCheaterProverB1ComputeC, Test3_4_ZkpCheaterProverB1ComputeH]
-    test_classes_to_run = [Test1_1_ElGamalKeyGen]
+    test_classes_to_run = [Test1_1_ElGamalKeyGen, Test1_2_ElGamalSign]
     loader = unittest.TestLoader()
     suites_list = []
     for test_class in test_classes_to_run:
