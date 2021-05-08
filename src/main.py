@@ -369,6 +369,18 @@ def challenge(prover, verifier, num_times=1):
     success, prob = None, None
 
     # --- IMPLEMENTATION GOES HERE ---
+    if prover.p != verifier.p or prover.g != verifier.g or prover.y != verifier.y:
+        return False, None
+    i=0
+    while i<num_times:
+        c = prover.compute_c()
+        b = verifier.choose_b(c)
+        h = prover.compute_h(b)
+        success = verifier.verify(h)
+        if success:
+            break
+        i=i+1
+    prob = 1/pow(2,num_times)
 
     # --------------------------------
 
@@ -492,10 +504,8 @@ class UocZkpCheaterProverB1(UocZkpProver):
         return h
 
 if __name__ == '__main__':
-    exp_k_priv = (1736419493, 423105914, 1439798331)
-    k_pub = (1736419493, 423105914, 1388681513)
-    m1, m2 = 4321, 1234
-    sig1 = (1670801833, 813531998)
-    sig2 = (1670801833, 1514976703)
-    extracted_k_priv = uoc_elgamal_extract_private_key(k_pub, m1, sig1, m2, sig2)
-    print(extracted_k_priv)
+    p, g, y, x = 28643, 1257, 3406, 28285
+    prover = UocZkpProver(p, g, y, x)
+    verifier = UocZkpVerifier(p, g, y)
+    success, prob = challenge(prover, verifier, 1)
+    print(success,prob)
