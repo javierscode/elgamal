@@ -120,7 +120,16 @@ def uoc_elgamal_verify(sig, k_pub, m):
     result = None
 
     # --- IMPLEMENTATION GOES HERE ---
+    (r,s) = sig
+    (p, alpha, beta)  = k_pub
 
+    t1 = (pow(beta,r,p) * pow(r,s,p)) % p
+    t2 = pow(alpha,m,p)
+
+    if t1 == t2:
+        result = True
+    else:
+        result = False
     # --------------------------------
 
     return result
