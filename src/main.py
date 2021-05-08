@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import random
 
 from sympy.ntheory.residue_ntheory import is_primitive_root
 from sympy.ntheory.primetest import isprime
+from sympy import prime
 
 # Log level constants
 LOG_CRITICAL = 0
@@ -54,6 +56,15 @@ def uoc_elgamal_keygen(n_bits):
     k_pub = (None, None, None)
 
     # --- IMPLEMENTATION GOES HERE ---
+
+    p = prime(n_bits)
+    alpha = random.randrange(1,p)
+    d = random.randrange(2,p-1)
+    beta = pow(alpha,d,p)
+
+    k_priv = (p, alpha, d)
+    k_pub = (p, alpha, beta)
+
 
     # --------------------------------
 
