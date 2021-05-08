@@ -820,7 +820,7 @@ if __name__ == '__main__':
                            Test2_3_ZkpVerifierChooseb, Test2_4_ZkpVerifierVerify,
                            Test2_5_Challenge,
 
-                           Test3_1_ZkpCheaterProverB0ComputeC]
+                           Test3_1_ZkpCheaterProverB0ComputeC, Test3_2_ZkpCheaterProverB0ComputeH]
 
     loader = unittest.TestLoader()
     suites_list = []
