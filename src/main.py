@@ -481,7 +481,8 @@ class UocZkpCheaterProverB1(UocZkpProver):
         c = None
 
         # --- IMPLEMENTATION GOES HERE ---
-
+        # self.r = randint(2,self.p)
+        # c = pow(self.g, self.r, self.p)
         # --------------------------------
 
         print_debug("{}:\tI amb sending c = {}".format(self.name, c), LOG_INFO)
@@ -499,7 +500,8 @@ class UocZkpCheaterProverB1(UocZkpProver):
         h = None
 
         # --- IMPLEMENTATION GOES HERE ---
-
+        p1 = self.p -1
+        h= self.r % p1
         # --------------------------------
 
         print_debug("{}:\tI amb sending h = {}".format(self.name, h), LOG_INFO)
