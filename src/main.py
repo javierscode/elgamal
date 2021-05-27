@@ -58,11 +58,15 @@ def uoc_elgamal_keygen(n_bits):
 
     # --- IMPLEMENTATION GOES HERE ---
 
+    # chose values for p, alpha and d
     p = prime(n_bits)
     alpha = randint(1,p)
     d = randint(2,p-1)
+
+    # b = alpha^d mod p
     beta = pow(alpha,d,p)
 
+    # Generation of private and public key
     k_priv = (p, alpha, d)
     k_pub = (p, alpha, beta)
 
@@ -89,14 +93,17 @@ def uoc_elgamal_sign(k_priv, m, h=None):
     # --- IMPLEMENTATION GOES HERE ---
     (p, alpha, d) = k_priv
 
+    # We choose a random value h ∈ [2, p - 2] coprimer with p - 1
     if h == None:
         while (h == None):
             new_h = randint(2, p - 2)
             if math.gcd(new_h, p - 1) == 1:
                 h = new_h
 
+    # r = alpha^h mod p
     r = pow(alpha, h, p)
 
+    # s = (m – d · r) · h^(-1) mod p-1
     p1 = p - 1
     dr = (d * r) % p1
     mdr = (m - dr) % p1
@@ -124,9 +131,11 @@ def uoc_elgamal_verify(sig, k_pub, m):
     (r,s) = sig
     (p, alpha, beta)  = k_pub
 
+    #t = (beta^r)*(r^s) mod p
     t1 = (pow(beta,r,p) * pow(r,s,p)) % p
     t2 = pow(alpha,m,p)
 
+    # If it matches we return true, of not we return false
     if t1 == t2:
         result = True
     else:
@@ -162,16 +171,20 @@ def uoc_elgamal_extract_private_key(k_pub, m1, sig1, m2, sig2):
 
     if r1 == r2 and s1!=s2 and m1!=m2:
         try:
+            #h = (m2 – m1)/(s2 – s1) mod p-1
             not_m1= (m1*-1) % p1
             not_s1= (s1*-1) % p1
             m2_rest_m1 = (m2 + not_m1) % p1
             s2_rest_s1 = (s2 + not_s1) % p1
             h = (m2_rest_m1 * pow(s2_rest_s1,-1,p1)) % p1
+
+            #d = (m1 – hs1) · r^(–1) mod p – 1
             hs = (h*s1) % p1
             not_hs = (hs*-1) % p1
             mhs = (m1 + not_hs) % p1
             r_1 = pow(r1,-1,p1)
             d = (mhs*r_1) % p1
+
             k_priv = (p, alpha,d)
         except:
             k_priv = -1
@@ -240,7 +253,9 @@ class UocZkpProver:
         c = None
 
         # --- IMPLEMENTATION GOES HERE ---
+        # Chose a random r
         self.r = randint(2,self.p)
+        # c = g^r (mod p)
         c = pow(self.g, self.r, self.p)
         # --------------------------------
 
@@ -257,6 +272,7 @@ class UocZkpProver:
         h = None
 
         # --- IMPLEMENTATION GOES HERE ---
+        # h = r + b · x (mod p – 1)
         p1 = self.p -1
         bx = (b * self.x) % p1
         h= (self.r + bx) % p1
@@ -339,8 +355,12 @@ class UocZkpVerifier:
         result = None
 
         # --- IMPLEMENTATION GOES HERE ---
+        # c · y^b (mod p)
         value_1 = (self.c * pow(self.y, self.b, self.p)) % self.p
+        # g^h (mod p)
         value_2 = pow(self.g, h, self.p)
+
+        # if its equal return true, if not return false
         if value_1 == value_2:
             result = True
         else:
@@ -420,7 +440,9 @@ class UocZkpCheaterProverB0(UocZkpProver):
         c = None
 
         # --- IMPLEMENTATION GOES HERE ---
+        # Chose a random r
         self.r = randint(2,self.p)
+        # c = g^r (mod p)
         c = pow(self.g, self.r, self.p)
         # --------------------------------
 
@@ -440,6 +462,7 @@ class UocZkpCheaterProverB0(UocZkpProver):
         h = None
 
         # --- IMPLEMENTATION GOES HERE ---
+        # h = r + 0 · x (mod p – 1)
         p1 = self.p -1
         h= self.r % p1
         # --------------------------------
@@ -481,6 +504,7 @@ class UocZkpCheaterProverB1(UocZkpProver):
         c = None
 
         # --- IMPLEMENTATION GOES HERE ---
+        # Chose a random r
         self.r = randint(2, self.p)
 
         # c = g^r * y^-1 (mod p)
