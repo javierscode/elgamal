@@ -474,15 +474,17 @@ class UocZkpCheaterProverB1(UocZkpProver):
         EXERCISE 3.3: Chooses a random r and computes c' (assuming b will be
         equal to 1).
 
-        This method must set self.r.
+        # This method must set self.r.
         :return: integer, c
         """
 
         c = None
 
         # --- IMPLEMENTATION GOES HERE ---
-        # self.r = randint(2,self.p)
-        # c = pow(self.g, self.r, self.p)
+        self.r = randint(2, self.p)
+
+        # c = g^r * y^-1 (mod p)
+        c = pow(pow(self.g, self.r, self.p) * pow(self.y, -1, self.p), 1, self.p)
         # --------------------------------
 
         print_debug("{}:\tI amb sending c = {}".format(self.name, c), LOG_INFO)
@@ -506,10 +508,3 @@ class UocZkpCheaterProverB1(UocZkpProver):
 
         print_debug("{}:\tI amb sending h = {}".format(self.name, h), LOG_INFO)
         return h
-
-if __name__ == '__main__':
-    p, g, y, x = 28643, 1257, 3406, 28285
-    prover = UocZkpProver(p, g, y, x)
-    verifier = UocZkpVerifier(p, g, y)
-    success, prob = challenge(prover, verifier, 1)
-    print(success,prob)
